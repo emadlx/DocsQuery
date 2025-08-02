@@ -23,9 +23,9 @@ from pdf2image import convert_from_bytes
 import pytesseract
 from PyPDF2 import PdfReader 
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.embeddings import OpenAIEmbeddings
-from langchain_community.chat_models import ChatOpenAI
-# from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+# from langchain_community.embeddings import OpenAIEmbeddings
+# from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS      
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
