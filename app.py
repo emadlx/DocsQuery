@@ -195,30 +195,37 @@ os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACEHUB_API_TOKEN
 
 
 # -----------------------------------------------------------------------------
-
 def get_pdf_text(pdf_docs):
     """
-    Extract text from PDF documents. For image-based PDFs, uses OCR via pytesseract.
-    If Poppler is not installed, falls back to PdfReader.extract_text for text-based PDFs.
+    Extract text from PDF documents. For image-based PDFs, uses OCR if available.
+    Falls back to PdfReader.extract_text for text-based PDFs or if any OCR error occurs.
     """
     text = ""
     for uploaded_file in pdf_docs:
-        try:
-            # Try converting PDF pages to images for OCR
-            images = convert_from_bytes(uploaded_file.read())
-            for img in images:
-                page_text = pytesseract.image_to_string(img)
-                if page_text:
-                    text += page_text + ""
-        except PDFInfoNotInstalledError:
-            # Poppler not installed: fallback to text extraction
-            uploaded_file.seek(0)
-            reader = PdfReader(uploaded_file)
-            for page in reader.pages:
-                page_text = page.extract_text()
-                if page_text:
-                    text += page_text + ""
+        file_bytes = uploaded_file.read()
+
+        # Try OCR if pdf2image/pytesseract are installed
+        if OCR_AVAILABLE:
+            try:
+                images = convert_from_bytes(file_bytes)
+                for img in images:
+                    page_text = pytesseract.image_to_string(img)
+                    if page_text:
+                        text += page_text + "\n"
+                continue  # skip fallback if OCR succeeded
+            except Exception:
+                pass  # any OCR error → fallback
+
+        # Fallback to text extraction
+        uploaded_file.seek(0)
+        reader = PdfReader(uploaded_file)
+        for page in reader.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
+
     return text
+
 
 
 def get_text_chunks(text):
