@@ -194,13 +194,13 @@ if not OPENAI_API_KEY:
     )
     st.stop()
 
-if not HF_TOKEN:
-    st.error(
-        "🤗 **Missing `HUGGINGFACEHUB_API_TOKEN`**\n\n"
-        "- Locally: add it to your `.env` file.\n"
-        "- On Streamlit Cloud: set it under **Manage app → Settings → Secrets**."
-    )
-    st.stop()
+# if not HF_TOKEN:
+#     st.error(
+#         "🤗 **Missing `HUGGINGFACEHUB_API_TOKEN`**\n\n"
+#         "- Locally: add it to your `.env` file.\n"
+#         "- On Streamlit Cloud: set it under **Manage app → Settings → Secrets**."
+#     )
+#     st.stop()
 
 openai.api_key = OPENAI_API_KEY
 os.environ["HUGGINGFACEHUB_API_TOKEN"] = HF_TOKEN
