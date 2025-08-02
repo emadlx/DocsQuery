@@ -38,14 +38,10 @@ from langchain_community.llms import HuggingFaceHub
 
 def get_pdf_text(pdf_docs):
     text = ""
-    for uploaded_file in pdf_docs:
-        # Convert each page to a PIL image
-        images = convert_from_bytes(uploaded_file.read())
-        for img in images:
-            # OCR the image to text
-            page_text = pytesseract.image_to_string(img)
-            if page_text:
-                text += page_text + "\n"
+    for pdf in pdf_docs:
+        pdf_reader = PdfReader(pdf)
+        for page in pdf_reader.pages:
+            text += page.extract_text()
     return text
 
 
