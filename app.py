@@ -183,27 +183,17 @@ from langchain.llms import HuggingFaceHub
 # 1) Load secrets/env and validate
 load_dotenv()
 
-OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
-HF_TOKEN = st.secrets.get("HUGGINGFACEHUB_API_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN")
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
 
-if not OPENAI_API_KEY:
-    st.error(
-        "🔑 **Missing `OPENAI_API_KEY`**\n\n"
-        "- Locally: add it to a `.env` file in project root.\n"
-        "- On Streamlit Cloud: set it under **Manage app → Settings → Secrets**."
-    )
-    st.stop()
+HUGGINGFACEHUB_API_TOKEN = st.secrets.get(
+    "HUGGINGFACEHUB_API_TOKEN", 
+    os.getenv("HUGGINGFACEHUB_API_TOKEN", "")
+)
 
-# if not HF_TOKEN:
-#     st.error(
-#         "🤗 **Missing `HUGGINGFACEHUB_API_TOKEN`**\n\n"
-#         "- Locally: add it to your `.env` file.\n"
-#         "- On Streamlit Cloud: set it under **Manage app → Settings → Secrets**."
-#     )
-#     st.stop()
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = HUGGINGFACEHUB_API_TOKEN
 
-openai.api_key = OPENAI_API_KEY
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = HF_TOKEN
+
 # -----------------------------------------------------------------------------
 
 def get_pdf_text(pdf_docs):
