@@ -1,9 +1,8 @@
+pdf2image
+pytesseract
+PyPDF2
 streamlit
 python-dotenv
-PyPDF2
-langchain
-langchain-community
 openai
-tiktoken
+langchain
 faiss-cpu
-
