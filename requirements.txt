@@ -1,10 +1,11 @@
+streamlit
 pdf2image
 pytesseract
 PyPDF2
-streamlit
-python-dotenv
 openai
-langchain
+python-dotenv
 faiss-cpu
+langchain-core
 langchain-community
 langchain-openai
+langchain-text-splitters
