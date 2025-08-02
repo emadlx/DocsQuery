@@ -183,6 +183,17 @@ from langchain.llms import HuggingFaceHub
 # 1) Load secrets/env and validate
 load_dotenv()
 
+# At the very top, before get_pdf_text or any use of OCR_AVAILABLE:
+try:
+    from pdf2image import convert_from_bytes
+    import pytesseract
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
+
+
+
+
 OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
 
 HUGGINGFACEHUB_API_TOKEN = st.secrets.get(
@@ -225,6 +236,7 @@ def get_pdf_text(pdf_docs):
                 text += page_text + "\n"
 
     return text
+
 
 
 
